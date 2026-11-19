@@ -1,0 +1,104 @@
+@font-face {
+  font-display: swap;
+  font-family: 'Acid Grotesk Medium';
+  src:
+    url('./assets/AcidGrotesk-Medium.woff2') format('woff2'),
+    url('./assets/AcidGrotesk-Medium.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Libre Caslon Condensed';
+  src:
+    url('./assets/LibreCaslonCondensed-Regular.woff2') format('woff2'),
+    url('./assets/LibreCaslonCondensed-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Libre Caslon Condensed';
+  gap: 50px;
+  height: 100vh;
+  justify-content: center;
+  overflow: hidden;
+  width: 100vw;
+}
+
+.topbar {
+  color: #000;
+}
+
+h1 {
+  font-family: 'Acid Grotesk Medium';
+  font-size: 30px;
+  text-transform: uppercase;
+}
+
+.container {
+  width: 100%;
+  padding: 0 2em;
+}
+
+.container .item {
+  -webkit-box-direction: 100%;
+  align-items: center;
+  border-bottom: 2px solid #000;
+  cursor: pointer;
+  display: flex;
+  font-size: 80px;
+  gap: 10px;
+  justify-content: center;
+  padding: 0.125em 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.item:nth-child(1) {
+  border-top: 2px solid #000;
+}
+
+.item:hover {
+  gap: 20px;
+}
+
+.item:hover .img {
+  width: 125px;
+}
+
+.img {
+  background-color: #000;
+  height: 80px;
+  overflow: hidden;
+  transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+  width: 0;
+}
+
+img {
+  height: auto;
+  object-fit: cover;
+  width: 125px;
+}
+
+.word {
+  white-space: nowrap;
+}
+
+.w1 {
+  display: flex;
+  justify-content: flex-end;
+  text-align: right;
+}

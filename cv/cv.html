@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Roberto Losa — CV</title>
+<!--
+  CV in the same style as robylosa.dev. One template, two languages:
+  open cv.html?lang=it or cv.html?lang=en. PDFs are generated with cv/build.sh.
+-->
+<style>
+  @font-face { font-family: "Archivo"; src: url("../node_modules/@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2") format("woff2-variations"); font-weight: 100 900; font-stretch: 62% 125%; }
+  @font-face { font-family: "Plex Mono"; src: url("../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2") format("woff2"); font-weight: 400; }
+  @font-face { font-family: "Plex Mono"; src: url("../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); font-weight: 500; }
+
+  :root {
+    --paper: #f2f3ee; --ink: #0f1a14; --muted: #56625a; --line: #cfd7cf;
+    --accent: #12894f; --mark: #c3efd3; --mark-ink: #0f1a14;
+    --sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --mono: "Plex Mono", Menlo, monospace;
+  }
+  /* Dark version: same palette as the site's dark theme (cv.html?theme=dark). */
+  :root[data-theme="dark"] {
+    --paper: #0d1310; --ink: #e6eee8; --muted: #93a198; --line: #223029;
+    --accent: #4fd18b; --mark: #1d5a3a; --mark-ink: #e6eee8;
+  }
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); }
+  body { color: var(--ink); font: 400 8.6pt/1.45 var(--sans); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 210mm; min-height: 297mm; padding: 13mm 14mm 11mm; display: flex; flex-direction: column; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ---------- Header ---------- */
+  header { display: grid; grid-template-columns: 1fr 30mm; gap: 8mm; align-items: end; padding-bottom: 5mm; border-bottom: 2px solid var(--ink); }
+  .kicker { font: 500 7pt var(--mono); text-transform: uppercase; letter-spacing: .04em; }
+  .kicker::before { content: "●"; color: var(--accent); margin-right: 6px; }
+  h1 { font: 900 50pt/.82 var(--sans); font-stretch: 62%; text-transform: uppercase; letter-spacing: -.02em; word-spacing: .14em; margin: 3mm 0 0 -.03em; }
+  h1 .g { color: var(--accent); }
+  .contacts { display: flex; flex-wrap: wrap; gap: 1.2mm 5mm; margin-top: 4mm; font: 400 7.2pt var(--mono); }
+  .contacts span b { font-weight: 500; color: var(--muted); margin-right: 4px; }
+  .photo { width: 30mm; height: 37.5mm; object-fit: cover; object-position: 50% 30%; display: block; }
+
+  /* ---------- Layout ---------- */
+  .cols { display: grid; grid-template-columns: 1.08fr 1fr; gap: 9mm; margin-top: 6mm; flex: 1; }
+  h2 { font: 900 15pt/1 var(--sans); font-stretch: 62%; text-transform: uppercase; letter-spacing: .005em; word-spacing: .16em; padding-bottom: 1.6mm; border-bottom: 2px solid var(--ink); margin-bottom: 3mm; }
+  section + section { margin-top: 6mm; }
+  .profile { font: 500 9.4pt/1.45 var(--sans); font-stretch: 92%; word-spacing: .04em; }
+  mark { background: var(--mark); color: var(--mark-ink); padding: 0 .1em; }
+
+  /* ---------- Experience ---------- */
+  .job { padding: 3mm 0; border-bottom: 1px solid var(--line); break-inside: avoid; }
+  .job:first-of-type { padding-top: 0; }
+  .job-head { display: grid; grid-template-columns: 9mm 1fr auto; gap: 3mm; align-items: center; }
+  .logo { width: 9mm; height: 9mm; background: #fff; display: block; object-fit: contain; }
+  .company { font: 900 13pt/1 var(--sans); font-stretch: 62%; text-transform: uppercase; word-spacing: .18em; }
+  .role { font: 500 7.2pt var(--mono); color: var(--muted); margin-top: .8mm; }
+  .when { font: 500 7.2pt var(--mono); text-align: right; white-space: nowrap; }
+  .when .now { display: block; color: var(--accent); }
+  .desc { margin-top: 2mm; }
+  .desc strong { font-weight: 700; }
+  .stack { margin-top: 1.4mm; font: 400 6.8pt var(--mono); color: var(--muted); }
+
+  /* ---------- Toolbox ---------- */
+  .tool { display: grid; grid-template-columns: 24mm 1fr; gap: 3mm; padding: 1.5mm 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+  .tool dt { font: 400 6.6pt var(--mono); color: var(--muted); }
+  .tool dd { font: 700 8.8pt/1.3 var(--sans); font-stretch: 78%; }
+  .tool dd span:not(:last-child)::after { content: " / "; color: var(--line); font-weight: 400; }
+  .para { display: grid; grid-template-columns: 24mm 1fr; gap: 3mm; padding: 2.2mm 0; border-bottom: 1px solid var(--line); }
+  .para dt { font: 400 6.6pt var(--mono); color: var(--muted); padding-top: .6mm; }
+  .para dd { font: 400 8pt/1.45 var(--sans); }
+  .para.first { border-top: 2px solid var(--ink); margin-top: 2mm; }
+
+  footer { display: flex; justify-content: space-between; margin-top: 5mm; padding-top: 2.5mm; border-top: 1px solid var(--line); font: 400 6.4pt var(--mono); color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div>
+      <p class="kicker" data-t="kicker"></p>
+      <h1>Roberto <span class="g">Losa</span></h1>
+      <p class="contacts" id="contacts"></p>
+    </div>
+    <img class="photo" src="assets/roberto.jpg" alt="Roberto Losa">
+  </header>
+
+  <div class="cols">
+    <div>
+      <section>
+        <h2 data-t="h_profile"></h2>
+        <p class="profile" id="profile"></p>
+      </section>
+      <section>
+        <h2 data-t="h_work"></h2>
+        <div id="jobs"></div>
+      </section>
+      <section>
+        <h2 data-t="h_edu"></h2>
+        <div class="job">
+          <div class="job-head" style="grid-template-columns: 1fr auto">
+            <div><div class="company" style="font-size:11pt" data-t="edu_school"></div><p class="role" data-t="edu_title"></p></div>
+            <p class="when">2008 — 2013</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div>
+      <section>
+        <h2 data-t="h_skills"></h2>
+        <dl id="tools"></dl>
+        <dl>
+          <div class="para first"><dt data-t="l_ai"></dt><dd data-t="ai"></dd></div>
+          <div class="para"><dt data-t="l_soft"></dt><dd data-t="soft"></dd></div>
+          <div class="para"><dt data-t="l_lang"></dt><dd data-t="langs"></dd></div>
+        </dl>
+      </section>
+    </div>
+  </div>
+
+  <footer><span data-t="consent"></span><span>robylosa.dev</span></footer>
+</div>
+
+<script>
+const T = {
+  it: {
+    kicker: "Frontend engineer · Lecco, Italia",
+    contacts: [
+      ["Nato il", "07/07/1994"], ["Residenza", "Civate (LC)"], ["Cell", "+39 338 2120500"],
+      ["Email", "roby94.losa@tiscali.it"], ["Web", "robylosa.dev"], ["LinkedIn", "/in/roberto-losa"], ["GitHub", "robylosa94"],
+    ],
+    h_profile: "Il mio approccio", h_work: "Esperienza", h_edu: "Formazione", h_skills: "Competenze",
+    profile: 'Lavoro bene a stretto contatto con designer, sviluppatori backend e team di prodotto. Prima di sviluppare mi piace capire il perché di una richiesta, proporre alternative quando servono e consegnare interfacce curate e facili da mantenere.',
+    now: "in corso",
+    jobs: [
+      { company: "iliad", logo: "../src/assets/logos/iliad.png", role: "Software Engineer, Frontend · Milano", when: "lug 2024 — oggi", current: true,
+        desc: "Mi occupo dello sviluppo frontend di <strong>iliad Space</strong>, della piattaforma con cui i rivenditori attivano e gestiscono le offerte mobile e fibra, e del back-office che il Customer Service usa per gestire la rete di vendita.",
+        stack: "Vue · Nuxt · Lit · TypeScript · Vuetify" },
+      { company: "Tavolla", logo: "../src/assets/logos/tavolla.png", role: "Senior Frontend Developer · Olginate", when: "gen 2021 — giu 2024",
+        desc: "Ho sviluppato applicazioni web per grandi aziende di diversi settori e l’e-commerce di proprietà, <strong>tavolla.com</strong>.",
+        stack: "React · Next.js · TypeScript · TailwindCSS" },
+      { company: "Lsv Multimedia", logo: "../src/assets/logos/lsv-multimedia.png", role: "Frontend Developer · Olginate", when: "ott 2013 — gen 2021",
+        desc: "In una digital agency, ho sviluppato e curato siti web, web app ed e-commerce per clienti di ogni dimensione e settore.",
+        stack: "React · Next.js · JavaScript · jQuery · TypeScript · TailwindCSS" },
+    ],
+    edu_school: "ITC G. Parini, Lecco", edu_title: "Diploma in Ragioneria e Informatica",
+    tools: [
+      ["Linguaggi", ["HTML", "CSS", "JavaScript", "TypeScript"]],
+      ["Ecosistema Vue", ["Vue", "Nuxt", "Pinia", "Vuex", "Vuetify"]],
+      ["Ecosistema React", ["React", "Next.js", "Gatsby"]],
+      ["Siti statici e CMS", ["Astro", "Sanity", "Strapi"]],
+      ["Componenti e interfacce", ["Lit", "Storybook", "Swiper"]],
+      ["Styling", ["TailwindCSS", "Sass", "Less", "Styled Components", "styled-jsx"]],
+      ["Animazioni e DOM", ["GSAP", "ScrollTrigger", "Lenis", "Web Animations API", "Barba.js", "Stimulus", "jQuery"]],
+      ["Build e strumenti", ["Vite", "Webpack", "Gulp", "Grunt", "npm", "yarn", "pnpm"]],
+      ["Versionamento e ambienti", ["Git", "SVN", "Docker"]],
+      ["Design", ["Figma", "Zeplin", "Photoshop", "Illustrator"]],
+    ],
+    l_ai: "Intelligenza artificiale", l_soft: "Competenze trasversali", l_lang: "Lingue",
+    ai: "Uso ogni giorno assistenti AI come Claude Code e Codex, dal supporto nella scrittura del codice fino ad agenti e flussi di lavoro automatizzati, per accelerare lo sviluppo: prime bozze di componenti, refactoring, studio di nuove API e documentazione, senza mai perdere il controllo su ciò che va in produzione.",
+    soft: "Sono collaborativo per natura, con una spiccata attitudine all’ascolto, alla condivisione e al lavoro di squadra. Preciso e organizzato, nel codice come nei processi, porto un’energia positiva e costante anche quando i problemi si fanno complicati. Curioso verso le nuove tecnologie e veloce ad adattarmi ai cambiamenti, affronto ogni progetto con serietà e determinazione.",
+    langs: "italiano (madrelingua), inglese (fluente), tedesco (base)",
+    consent: "Autorizzo il trattamento dei dati personali ai sensi del Reg. UE 2016/679 (GDPR).",
+  },
+  en: {
+    kicker: "Frontend engineer · Lecco, Italy",
+    contacts: [
+      ["Based in", "Lecco, Italy"], ["Phone", "+39 338 2120500"], ["Email", "roby94.losa@tiscali.it"],
+      ["Web", "robylosa.dev"], ["LinkedIn", "/in/roberto-losa"], ["GitHub", "robylosa94"],
+    ],
+    h_profile: "My approach", h_work: "Experience", h_edu: "Education", h_skills: "Skills",
+    profile: 'I work well alongside designers, backend developers and product teams. Before building something I like to understand the reason behind the request, suggest alternatives when needed and deliver interfaces that are polished and easy to maintain.',
+    now: "ongoing",
+    jobs: [
+      { company: "iliad", logo: "../src/assets/logos/iliad.png", role: "Software Engineer, Frontend · Milan", when: "Jul 2024 — now", current: true,
+        desc: "I work on the frontend of <strong>iliad Space</strong>, of the platform dealers use to activate and manage mobile and fibre offers, and of the back-office Customer Service uses to manage the sales network.",
+        stack: "Vue · Nuxt · Lit · TypeScript · Vuetify" },
+      { company: "Tavolla", logo: "../src/assets/logos/tavolla.png", role: "Senior Frontend Developer · Olginate", when: "Jan 2021 — Jun 2024",
+        desc: "I built web applications for large companies across different industries, and the company’s own e-commerce, <strong>tavolla.com</strong>.",
+        stack: "React · Next.js · TypeScript · TailwindCSS" },
+      { company: "Lsv Multimedia", logo: "../src/assets/logos/lsv-multimedia.png", role: "Frontend Developer · Olginate", when: "Oct 2013 — Jan 2021",
+        desc: "At a digital agency, I built and looked after websites, web apps and e-commerce for clients of every size and industry.",
+        stack: "React · Next.js · JavaScript · jQuery · TypeScript · TailwindCSS" },
+    ],
+    edu_school: "ITC G. Parini, Lecco", edu_title: "High-school diploma in Accounting and Computer Science",
+    tools: [
+      ["Languages", ["HTML", "CSS", "JavaScript", "TypeScript"]],
+      ["Vue ecosystem", ["Vue", "Nuxt", "Pinia", "Vuex", "Vuetify"]],
+      ["React ecosystem", ["React", "Next.js", "Gatsby"]],
+      ["Static sites & CMS", ["Astro", "Sanity", "Strapi"]],
+      ["Components & interfaces", ["Lit", "Storybook", "Swiper"]],
+      ["Styling", ["TailwindCSS", "Sass", "Less", "Styled Components", "styled-jsx"]],
+      ["Animation & DOM", ["GSAP", "ScrollTrigger", "Lenis", "Web Animations API", "Barba.js", "Stimulus", "jQuery"]],
+      ["Build & tools", ["Vite", "Webpack", "Gulp", "Grunt", "npm", "yarn", "pnpm"]],
+      ["Versioning & environments", ["Git", "SVN", "Docker"]],
+      ["Design", ["Figma", "Zeplin", "Photoshop", "Illustrator"]],
+    ],
+    l_ai: "Artificial intelligence", l_soft: "Soft skills", l_lang: "Spoken languages",
+    ai: "I use AI assistants like Claude Code and Codex every day, from help with writing code to agents and automated workflows, to speed up development: first drafts of components, refactoring, exploring new APIs and documentation — without ever losing control of what ships to production.",
+    soft: "I’m naturally collaborative, with a real inclination for listening, sharing and teamwork. Precise and organized, in code as much as in process, I bring a positive, steady energy even when problems get tricky. Curious about new technologies and quick to adapt to change, I approach every project with seriousness and determination.",
+    langs: "Italian (native), English (fluent), German (basic)",
+    consent: "I authorise the processing of my personal data under EU Regulation 2016/679 (GDPR).",
+  },
+};
+
+const params = new URLSearchParams(location.search);
+const lang = params.get("lang") === "en" ? "en" : "it";
+if (params.get("theme") === "dark") document.documentElement.dataset.theme = "dark";
+const t = T[lang];
+document.documentElement.lang = lang;
+const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+
+document.querySelectorAll("[data-t]").forEach((el) => (el.textContent = t[el.dataset.t]));
+document.getElementById("profile").innerHTML = t.profile;
+document.getElementById("contacts").innerHTML = t.contacts.map(([k, v]) => `<span><b>${esc(k)}</b>${esc(v)}</span>`).join("");
+document.getElementById("jobs").innerHTML = t.jobs.map((j) => `
+  <article class="job">
+    <div class="job-head">
+      <img class="logo" src="${j.logo}" alt="">
+      <div><div class="company">${esc(j.company)}</div><p class="role">${esc(j.role)}</p></div>
+      <p class="when">${esc(j.when)}${j.current ? `<span class="now">● ${t.now}</span>` : ""}</p>
+    </div>
+    <p class="desc">${j.desc}</p>
+    <p class="stack">${esc(j.stack)}</p>
+  </article>`).join("");
+document.getElementById("tools").innerHTML = t.tools.map(([g, items]) => `
+  <div class="tool"><dt>${esc(g)}</dt><dd>${items.map((i) => `<span>${esc(i)}</span>`).join("")}</dd></div>`).join("");
+</script>
+</body>
+</html>

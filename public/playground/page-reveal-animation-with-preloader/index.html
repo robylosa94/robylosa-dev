@@ -1,0 +1,192 @@
+<!DOCTYPE html<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Roberto Losa - Page Reveal Animation With Preloader</title>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="../apple-touch-icon.png?v=1"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../favicon-32x32.png?v=1"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../favicon-16x16.png?v=1"
+    />
+    <link rel="manifest" href="../site.webmanifest.json?v=1" />
+    <link rel="mask-icon" href="../safari-pinned-tab.svg?v=1" color="#000000" />
+    <link rel="shortcut icon" href="../favicon.ico?v=1" />
+    <meta name="msapplication-TileColor" content="#000000" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="stylesheet" href="../topbar.css" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  </head>
+  <body>
+    <header class="topbar" data-topbar>
+      <div class="topbar__crumbs" role="navigation" aria-label="Breadcrumb">
+        <a href="/">Roberto Losa</a>
+        <span class="topbar__sep" aria-hidden="true">/</span>
+        <a href="/playground/" class="topbar__up">Playground</a>
+        <span class="topbar__sep topbar__here-sep" aria-hidden="true">/</span>
+        <span class="topbar__here" aria-current="page">Page reveal animation with preloader</span>
+      </div>
+      <div class="topbar__nav">
+        <a href="/files/Roberto-Losa-CV-english-dark.pdf" download data-cv>CV ↓</a>
+        <button type="button" data-topbar-theme aria-label="Switch theme">◐</button>
+      </div>
+    </header>
+    <script>
+      (function () {
+        var bar = document.querySelector('[data-topbar]');
+        var cv = bar.querySelector('[data-cv]');
+        var os = matchMedia('(prefers-color-scheme: dark)');
+        function isDark() { return bar.dataset.theme ? bar.dataset.theme === 'dark' : os.matches; }
+        // the CV link downloads the light or dark PDF, matching the bar's theme
+        function syncCv() { cv.href = cv.getAttribute('href').replace(/(-dark)?\.pdf$/, isDark() ? '-dark.pdf' : '.pdf'); }
+        try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') bar.dataset.theme = t; } catch (e) {}
+        syncCv();
+        os.addEventListener('change', syncCv);
+        bar.querySelector('[data-topbar-theme]').addEventListener('click', function () {
+          bar.dataset.theme = isDark() ? 'light' : 'dark';
+          try { localStorage.setItem('theme', bar.dataset.theme); } catch (e) {}
+          syncCv();
+        });
+      })();
+    </script>
+    <div class="loader">
+      <span class="counter">0</span>
+      <div class="site-teaser">
+        <span>Use headphones for better experience</span>
+      </div>
+      <div class="circles">
+        <div class="circle circle-outer"></div>
+        <div class="circle circle-inner"></div>
+        <div class="circle-inner-rotator"></div>
+        <div class="block"></div>
+      </div>
+    </div>
+    <div class="container">
+      <h1>H i</h1>
+    </div>
+    <script>
+      function startLoader() {
+        let counterElement = document.querySelector('.counter')
+        let currentValue = 0
+
+        function updateCounter() {
+          if (currentValue === 100) return
+
+          currentValue += Math.floor(Math.random() * 10) + 1
+
+          if (currentValue > 100) currentValue = 100
+
+          counterElement.textContent = currentValue + '%'
+
+          let delay = Math.floor(Math.random() * 200) + 250
+          setTimeout(updateCounter, delay)
+        }
+
+        updateCounter()
+      }
+
+      startLoader()
+
+      gsap.from('.circles', 2, {
+        top: '-100%',
+        ease: 'elastic.out',
+        delay: 0.5,
+      })
+
+      gsap.to('.circle-inner', 1, {
+        width: '75px',
+        height: '75px',
+        ease: 'power4.inOut',
+        delay: 2,
+      })
+
+      gsap.to('.circle-inner-rotator', 1, {
+        scale: 1,
+        ease: 'power4.inOut',
+        delay: 2.5,
+      })
+
+      gsap.to('.circles', 1.5, {
+        rotation: 360,
+        ease: 'power4.inOut',
+        delay: 3,
+      })
+
+      gsap.to('.block', 0.75, {
+        display: 'block',
+        height: '200px',
+        ease: 'power4.inOut',
+        delay: 4,
+      })
+
+      gsap.to('.block', 0.75, {
+        width: '800px',
+        ease: 'power4.inOut',
+        delay: 4.5,
+      })
+
+      gsap.fromTo(
+        '.container',
+        {
+          duration: 2,
+          left: '100%',
+          scale: 0.5,
+          ease: 'power4.inOut',
+          delay: 4,
+        },
+        {
+          duration: 2,
+          left: '50%',
+          scale: 0.5,
+          transform: 'translateX(-50%)',
+          ease: 'power4.inOut',
+          delay: 4,
+        }
+      )
+
+      gsap.to('.block', 1.5, {
+        width: '0px',
+        ease: 'power4.inOut',
+        delay: 5,
+      })
+
+      gsap.to('.block', 1.5, {
+        height: '0px',
+        ease: 'power4.inOut',
+        delay: 6,
+      })
+
+      gsap.to('.circles', 1.5, {
+        rotation: 0,
+        ease: 'power4.inOut',
+        delay: 6.5,
+      })
+
+      gsap.to('.loader', 2.5, {
+        scale: 0,
+        ease: 'power4.inOut',
+        delay: 7,
+      })
+
+      gsap.to('.container', 2, {
+        scale: 1,
+        ease: 'power4.inOut',
+        delay: 7.5,
+      })
+    </script>
+  </body>
+</html>

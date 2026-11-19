@@ -1,0 +1,147 @@
+@font-face {
+  font-display: swap;
+  font-family: 'Saol Display Light Italic';
+  src:
+    url('./assets/SaolDisplay-LightItalic.woff2') format('woff2'),
+    url('./assets/SaolDisplay-LightItalic.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Saol Display';
+  src:
+    url('./assets/SaolDisplay-Regular.woff2') format('woff2'),
+    url('./assets/SaolDisplay-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+}
+
+:root {
+  --circle-outline: #505050;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background-color: #181818;
+  height: 100vh;
+  overflow: hidden;
+  width: 100vw;
+}
+
+.topbar {
+  color: #000;
+}
+
+.loader {
+  background-color: #000;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.counter {
+  align-items: flex-end;
+  color: var(--circle-outline);
+  display: flex;
+  font-family: 'Saol Display Light Italic';
+  font-size: 10vw;
+  height: 100%;
+  justify-content: flex-end;
+  padding: 2rem 4rem;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+}
+
+.site-teaser span {
+  color: var(--circle-outline);
+  font-family: 'Saol Display Light Italic';
+  font-size: 1rem;
+  padding: 2rem 4rem;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.circles {
+  border-radius: 50%;
+  bottom: 5rem;
+  height: 400px;
+  left: 5rem;
+  position: absolute;
+  width: 400px;
+}
+
+.circle {
+  background: none;
+  border: 1px solid var(--circle-outline);
+  border-radius: 50%;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.circle-inner {
+  height: 400px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+}
+
+.circle-inner-rotator {
+  background: none;
+  border: 1px solid var(--circle-outline);
+  border-radius: 50%;
+  height: 162px;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%) scale(0);
+  width: 162px;
+}
+
+.block {
+  background: none;
+  border: 1px solid var(--circle-outline);
+  display: none;
+  height: 0;
+  left: 200px;
+  position: absolute;
+  top: -100px;
+  transform-origin: bottom;
+  width: 0;
+}
+
+.container {
+  background: #fff;
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+}
+
+.container h1 {
+  font-family: 'Saol Display';
+  font-size: 7.5rem;
+  font-weight: 400;
+  letter-spacing: -0.5rem;
+}

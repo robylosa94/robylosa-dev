@@ -1,0 +1,158 @@
+---
+import { render } from 'astro:content';
+import { getJobs, years, city } from '../lib/experience';
+import { ui, inlineMarkdown, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang];
+
+const jobs = await getJobs();
+const rendered = await Promise.all(jobs.map((j) => render(j)));
+
+/** Fallback when a job has no logo: "Lsv Multimedia" -> "LM", "iliad" -> "il". */
+const initials = (name: string) => (name.match(/[A-Z]/g)?.slice(0, 2).join('') || name.slice(0, 2)).padEnd(2, name[1] ?? '');
+---
+
+<section id="work" class="wrap section">
+  <h2 class="section-title">{t.work}</h2>
+
+  <ol class="jobs">
+    {
+      jobs.map((job, i) => {
+        const { Content } = rendered[i];
+        const d = job.data;
+        return (
+          <li class="job">
+            <p class="when">
+              {years(job, t.now)}
+              {!d.end && <span class="now">{t.current}</span>}
+            </p>
+            <div>
+              <div class="head">
+                <span class="logo" aria-hidden="true">
+                  {d.logo ? (
+                    <img src={d.logo.src} width={d.logo.width} height={d.logo.height} alt="" loading="lazy" decoding="async" />
+                  ) : (
+                    <span class="mono">{initials(d.company)}</span>
+                  )}
+                </span>
+                <h3 class="company">{d.company}</h3>
+              </div>
+              <p class="role">
+                {d.role}
+                {city(job, lang) && ` · ${city(job, lang)}`}
+              </p>
+            </div>
+            <div>
+              {lang === 'it' && d.it ? (
+                <div class="desc">
+                  <p set:html={inlineMarkdown(d.it.description)} />
+                </div>
+              ) : (
+                <div class="desc">
+                  <Content />
+                </div>
+              )}
+              {d.stack.length > 0 && <p class="stack">{d.stack.join(' · ')}</p>}
+            </div>
+          </li>
+        );
+      })
+    }
+  </ol>
+</section>
+
+<style>
+  .jobs {
+    list-style: none;
+  }
+  .job {
+    display: grid;
+    grid-template-columns: 160px 1fr 1.3fr;
+    gap: 32px;
+    padding: 36px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .when {
+    font: 500 14px var(--mono);
+    padding-top: 8px;
+  }
+  .now {
+    display: block;
+    margin-top: 6px;
+    color: var(--accent);
+  }
+  .now::before {
+    content: '●';
+    margin-right: 6px;
+  }
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo {
+    flex: none;
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    background: #fff;
+    padding: 7px;
+    overflow: hidden;
+  }
+  .logo:has(img) {
+    padding: 0; /* the icons already carry their own margins */
+  }
+  .logo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .logo .mono {
+    font: 900 22px/1 var(--sans);
+    font-stretch: 62%;
+    color: #0f1a14;
+  }
+  .company {
+    font: 900 clamp(26px, 3vw, 46px) / 0.9 var(--sans);
+    font-stretch: 62%;
+    text-transform: uppercase;
+    white-space: nowrap; /* "Lsv Multimedia" stays on one line */
+  }
+  .role {
+    margin-top: 10px;
+    font: 500 14px var(--mono);
+    color: var(--muted);
+  }
+  .desc {
+    font-size: 20px;
+    line-height: 1.45;
+  }
+  .stack {
+    margin-top: 14px;
+    font: 400 13px var(--mono);
+    color: var(--muted);
+  }
+  @media (max-width: 800px) {
+    .job {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 28px 0;
+    }
+    .when {
+      padding-top: 0;
+    }
+    .now {
+      display: inline;
+      margin: 0 0 0 12px;
+    }
+    .company {
+      font-size: clamp(30px, 10vw, 44px);
+    }
+  }
+</style>

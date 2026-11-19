@@ -1,0 +1,136 @@
+@import '@fontsource-variable/archivo/wdth.css';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+
+/* ---------- Tokens ----------
+ * Palette built around the green accent: sage-tinted paper, green-black ink,
+ * greyed-green neutrals, and a mint highlight. "hot" (kicker dot, "ciao")
+ * follows the accent so the page has a single colour voice.
+ */
+:root {
+  color-scheme: light;
+  --paper: #f2f3ee;
+  --ink: #0f1a14;
+  --muted: #56625a;
+  --line: #cfd7cf;
+  --accent: #12894f;
+  --hot: var(--accent);
+  --mark: #c3efd3;
+  --mark-ink: #0f1a14;
+
+  --sans: 'Archivo Variable', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --paper: #0d1310;
+    --ink: #e6eee8;
+    --muted: #93a198;
+    --line: #223029;
+    --accent: #4fd18b;
+    --mark: #1d5a3a;
+    --mark-ink: #e6eee8;
+  }
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --paper: #0d1310;
+  --ink: #e6eee8;
+  --muted: #93a198;
+  --line: #223029;
+  --accent: #4fd18b;
+  --mark: #1d5a3a;
+  --mark-ink: #e6eee8;
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html {
+  scroll-behavior: smooth;
+  /* anchor links land below the sticky header */
+  scroll-padding-top: 88px;
+}
+body {
+  overflow-x: clip; /* hovered name letters can stretch past the edge */
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 18px/1.55 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s, color 0.3s;
+}
+a {
+  color: inherit;
+}
+::selection {
+  background: var(--mark);
+  color: var(--mark-ink);
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline: 28px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Section: small mono label + big condensed title, ruled underneath. */
+.section {
+  padding-top: 120px;
+}
+.section-title {
+  font: 900 clamp(56px, 9vw, 128px) / 0.85 var(--sans);
+  font-stretch: 62%;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.link {
+  font: 500 15px var(--mono);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+.link:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 600px) {
+  .wrap {
+    padding-inline: 18px;
+  }
+  .section {
+    padding-top: 88px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

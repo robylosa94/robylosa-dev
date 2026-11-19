@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="404 — Roberto Losa" noindex>
+  <main class="wrap nf">
+    <p class="code" aria-hidden="true">404</p>
+    <h1 class="sr-only">Page not found</h1>
+    <div class="log">
+      <p><span class="err">GET</span> <span id="path">/this-page</span> <span class="st">404 (Not Found)</span></p>
+      <p class="hint">Looking for the playground? It now lives at <a class="link" href="/playground/">robylosa.dev/playground</a>.</p>
+      <p><a class="link" href="/">← Back to the homepage</a></p>
+    </div>
+  </main>
+  <script>
+    const el = document.getElementById('path');
+    if (el) el.textContent = decodeURIComponent(location.pathname);
+  </script>
+</Base>
+
+<style>
+  .nf {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: 48px;
+  }
+  .code {
+    font: 900 clamp(140px, 40vw, 520px) / 0.78 var(--sans);
+    font-stretch: 62%;
+    letter-spacing: -0.02em;
+    margin-left: -0.04em;
+  }
+  .log {
+    margin-top: 32px;
+    border-top: 2px solid var(--ink);
+    padding-top: 18px;
+    font: 400 15px/1.8 var(--mono);
+    display: grid;
+    gap: 14px;
+  }
+  .err {
+    color: #d93025;
+    font-weight: 600;
+  }
+  .st {
+    color: var(--muted);
+  }
+  .hint {
+    color: var(--muted);
+  }
+  p:last-child {
+    margin-top: 10px;
+  }
+</style>

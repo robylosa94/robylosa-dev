@@ -1,0 +1,298 @@
+---
+import { site } from '../data/site';
+import { content, ui, playgroundPath, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang];
+const c = content(lang);
+
+const [first, last] = site.name.split(' ');
+const hasMark = c.mark && c.intro.includes(c.mark);
+const [before, after] = hasMark ? c.intro.split(c.mark) : [c.intro, ''];
+const roles = c.roles;
+---
+
+<!--
+  "Spotlight" hero: a dot grid behind the content lights up green around the pointer.
+  On touch screens (no pointer) the light drifts slowly on its own.
+-->
+<section class="hero" data-spotlight>
+  <div class="wrap">
+    <p class="kicker">Frontend engineer · {site.location.city}, {c.country} · {t.since} {site.since}</p>
+
+    <h1 class="name">
+      <span class="row">{first}</span>
+      <span class="row accent">{last}</span>
+    </h1>
+
+    <p class="roles">
+      <span class="sr-only">{t.building} {roles.join(', ')}.</span>
+      <span aria-hidden="true">{t.building}</span>
+      <span class="roller" aria-hidden="true">
+        {roles.map((r, i) => <span class:list={{ on: i === 0 }}>{r}</span>)}
+      </span>
+    </p>
+
+    <div class="bottom">
+      <p class="intro">{before}{hasMark && <mark>{c.mark}</mark>}{after}</p>
+      <p class="links">
+        <a class="link" href={c.cv} download data-cv>{t.downloadCv}</a>
+        <a class="link" href={site.links.linkedin} rel="me noopener" target="_blank">LinkedIn ↗</a>
+        <a class="link" href={site.links.github} rel="me noopener" target="_blank">GitHub ↗</a>
+        <a class="link" href={playgroundPath[lang]}>Playground →</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  const hero = document.querySelector<HTMLElement>('[data-spotlight]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (hero) {
+    // --- Spotlight position ---
+    const set = (x: number, y: number) => {
+      hero.style.setProperty('--x', `${x}px`);
+      hero.style.setProperty('--y', `${y}px`);
+    };
+    let lastMove = 0;
+    hero.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      const r = hero.getBoundingClientRect();
+      set(e.clientX - r.left, e.clientY - r.top);
+      lastMove = performance.now();
+    });
+
+    // Idle drift (touch screens, or mouse resting outside): a slow figure-eight.
+    if (!reduce) {
+      const drift = (t: number) => {
+        if (t - lastMove > 2500) {
+          const w = hero.clientWidth;
+          const h = hero.clientHeight;
+          const s = t / 4000;
+          set(w * (0.62 + 0.25 * Math.sin(s)), h * (0.42 + 0.22 * Math.sin(s * 2)));
+        }
+        requestAnimationFrame(drift);
+      };
+      requestAnimationFrame(drift);
+    }
+
+    // --- "Building ___" roller ---
+    // The box resizes to the current word, so "Building" stays snug and the underline follows.
+    const roller = hero.querySelector<HTMLElement>('.roller');
+    const words = [...hero.querySelectorAll<HTMLElement>('.roller span')];
+    const fit = (el: HTMLElement) => roller?.style.setProperty('--w', `${el.offsetWidth}px`);
+    if (roller && words.length) {
+      document.fonts.ready.then(() => fit(words.find((w) => w.classList.contains('on')) ?? words[0]));
+      addEventListener('resize', () => fit(words.find((w) => w.classList.contains('on')) ?? words[0]));
+    }
+    if (roller && !reduce && words.length > 1) {
+      let i = 0;
+      let timer = 0;
+      const step = () => {
+        const cur = words[i];
+        const next = words[(i + 1) % words.length];
+        cur.classList.replace('on', 'out');
+        next.classList.remove('out');
+        // restart the enter transition from below
+        void next.offsetWidth;
+        next.classList.add('on');
+        fit(next);
+        setTimeout(() => cur.classList.remove('out'), 700);
+        i = (i + 1) % words.length;
+      };
+      const start = () => {
+        clearInterval(timer);
+        timer = window.setInterval(step, 2600);
+      };
+      start();
+      // pause while the tab is hidden so words don't pile up
+      document.addEventListener('visibilitychange', () => (document.hidden ? clearInterval(timer) : start()));
+    }
+  }
+</script>
+
+<style>
+  .hero {
+    --x: 70%;
+    --y: 40%;
+    position: relative;
+    padding: 64px 0 72px;
+    overflow: hidden;
+  }
+  /* Two dot grids: a faint one everywhere, a green one revealed around the spotlight. */
+  .hero::before,
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-size: 22px 22px;
+    background-position: 11px 11px;
+  }
+  .hero::before {
+    background-image: radial-gradient(color-mix(in srgb, var(--ink) 15%, transparent) 1.2px, transparent 1.6px);
+  }
+  .hero::after {
+    background-image: radial-gradient(var(--accent) 1.9px, transparent 2.3px);
+    -webkit-mask-image: radial-gradient(260px circle at var(--x) var(--y), #000 0%, transparent 75%);
+    mask-image: radial-gradient(260px circle at var(--x) var(--y), #000 0%, transparent 75%);
+  }
+  .wrap {
+    position: relative;
+    z-index: 1;
+  }
+
+  .kicker {
+    font: 500 13px var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .kicker::before {
+    content: '●';
+    color: var(--hot);
+    margin-right: 10px;
+  }
+
+  /* ---- Name: condensed, uppercase, surname in the accent colour ---- */
+  .name {
+    font: 900 clamp(72px, 20vw, 250px) / 0.82 var(--sans);
+    font-stretch: 62%;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin: 28px 0 0 -0.04em;
+  }
+  .row {
+    display: block;
+    white-space: nowrap;
+  }
+  .accent {
+    color: var(--accent);
+  }
+  :global(.js) .row {
+    animation: rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  :global(.js) .row + .row {
+    animation-delay: 0.12s;
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(0.2em);
+    }
+  }
+
+  /* ---- "Building ___" ---- */
+  .roles {
+    display: flex;
+    align-items: baseline;
+    gap: 0 0.6ch;
+    margin-top: 28px;
+    font: 500 clamp(20px, 2.4vw, 30px) / 1.3 var(--mono);
+  }
+  .roller {
+    --w: auto;
+    position: relative;
+    display: inline-block;
+    width: var(--w);
+    height: 1.3em;
+    overflow: hidden;
+    color: var(--accent);
+    vertical-align: bottom;
+    transition: width 0.55s cubic-bezier(0.65, 0, 0.25, 1);
+  }
+  /* underline that stretches with the word */
+  .roller::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: currentColor;
+    opacity: 0.5;
+  }
+  .roller span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    white-space: nowrap;
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(80%);
+    transition:
+      transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+      opacity 0.45s ease,
+      filter 0.45s ease;
+  }
+  .roller span:global(.on) {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+  .roller span:global(.out) {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(-80%);
+    transition-duration: 0.45s;
+  }
+  /* the current word sits in the flow, so the box has a natural width before JS measures it */
+  .roller span:global(.on) {
+    position: relative;
+  }
+
+  /* ---- Intro + links ---- */
+  .bottom {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 48px;
+    align-items: end;
+    margin-top: 56px;
+    padding-top: 28px;
+    border-top: 2px solid var(--ink);
+  }
+  .intro {
+    font: 500 clamp(20px, 2vw, 26px) / 1.35 var(--sans);
+    font-stretch: 88%;
+    letter-spacing: -0.01em;
+    max-width: 42ch;
+  }
+  mark {
+    background: var(--mark);
+    color: var(--mark-ink);
+    padding: 0 0.12em;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 28px;
+    justify-content: flex-end;
+  }
+
+  @media (max-width: 800px) {
+    .hero {
+      padding: 40px 0 56px;
+    }
+    .name {
+      font-size: clamp(64px, 24vw, 200px);
+    }
+    /* phones: word on its own line, so long words never make the layout jump */
+    .roles {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      font-size: 18px;
+    }
+    .bottom {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      margin-top: 40px;
+    }
+    .links {
+      justify-content: flex-start;
+    }
+  }
+</style>

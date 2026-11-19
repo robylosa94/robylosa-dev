@@ -1,0 +1,144 @@
+---
+import { site } from '../data/site';
+import { languages, homePath, playgroundPath, pathIn, ui, content, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang];
+const cv = content(lang).cv;
+const home = homePath[lang];
+const here = Astro.url.pathname;
+const langs = Object.keys(languages) as Lang[];
+---
+
+<header class="wrap header">
+  <a href={homePath[lang]} class="home">{site.name}</a>
+  <nav aria-label={t.navLabel}>
+    <a href={`${home}#work`} class="sec">{t.navWork}</a>
+    <a href={`${home}#ai`} class="sec">AI</a>
+    <a href={`${home}#contact`} class="sec">{t.navContact}</a>
+    <span class="divider sec" aria-hidden="true"></span>
+    <a href={cv} download class="ext" data-cv>CV ↓</a>
+    <a href={playgroundPath[lang]} class="ext sec" aria-current={here.includes('/playground') ? 'page' : undefined}>Playground</a>
+    <span class="langs" role="group" aria-label={t.langLabel}>
+      {
+        langs.map((l) => (
+          <a
+            href={pathIn(here, l)}
+            hreflang={l}
+            lang={l}
+            aria-current={l === lang ? 'page' : undefined}
+            aria-label={languages[l]}
+            data-lang-link
+          >
+            {l.toUpperCase()}
+          </a>
+        ))
+      }
+    </span>
+    <button type="button" data-toggle-theme aria-label={t.themeToggle}>◐</button>
+  </nav>
+</header>
+
+<script>
+  import { syncCvLinks, toggleTheme } from '../scripts/ui';
+  document.querySelectorAll('[data-toggle-theme]').forEach((b) => b.addEventListener('click', toggleTheme));
+
+  // CV links download the light or dark PDF, matching the theme on screen.
+  syncCvLinks();
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncCvLinks);
+
+  // Keep the section you're reading when switching language (e.g. /#work → /it/#work).
+  document.querySelectorAll<HTMLAnchorElement>('[data-lang-link]').forEach((a) =>
+    a.addEventListener('click', () => {
+      if (location.hash) a.href = a.pathname + location.hash;
+    }),
+  );
+</script>
+
+<style>
+  /* Sticky: stays on top while scrolling; the shadow/clip trick paints the background edge to edge. */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--paper);
+    box-shadow: 0 0 0 100vmax var(--paper);
+    clip-path: inset(0 -100vmax);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 72px;
+    border-bottom: 2px solid var(--ink);
+    font: 500 14px var(--mono);
+  }
+  .home {
+    text-decoration: none;
+    font-weight: 500;
+  }
+  nav {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  nav a {
+    text-decoration: none;
+    color: var(--muted);
+  }
+  nav a:hover {
+    color: var(--ink);
+  }
+  /* EN / IT switch */
+  /* separates the in-page links from CV / Playground */
+  .divider {
+    width: 1.5px;
+    height: 16px;
+    background: var(--line);
+  }
+  nav .ext {
+    color: var(--ink);
+  }
+  nav .ext:hover {
+    color: var(--accent);
+  }
+  .langs {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px;
+    border: 1.5px solid var(--ink);
+  }
+  .langs a {
+    padding: 3px 7px;
+    font-size: 12px;
+    line-height: 1;
+  }
+  .langs a[aria-current='page'] {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  button {
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  @media (max-width: 760px) {
+    .sec:not(.ext) {
+      display: none;
+    }
+  }
+  @media (max-width: 520px) {
+    nav {
+      gap: 14px;
+    }
+    /* phones: keep CV, language switch and theme; drop the rest */
+    .sec {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,97 @@
+@font-face {
+  font-display: swap;
+  font-family: 'Neue Montreal';
+  src:
+    url('./assets/NeueMontreal-regular.woff2') format('woff2'),
+    url('./assets/NeueMontreal-regular.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Neue Montreal';
+  src:
+    url('./assets/NeueMontreal-medium.woff2') format('woff2'),
+    url('./assets/NeueMontreal-medium.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background-color: #000;
+  font-family: 'Neue Montreal';
+  height: 100%;
+  width: 100%;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+}
+
+img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+h2 {
+  color: #fff;
+  font-size: 14vw;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+p {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.intro-copy {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+section {
+  margin: 150vh 0;
+}
+
+.section-previews {
+  position: fixed;
+  height: 700px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+}
+
+.img {
+  clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+  height: 100%;
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+}
+
+.spacer {
+  height: 200px;
+  width: 100%;
+}

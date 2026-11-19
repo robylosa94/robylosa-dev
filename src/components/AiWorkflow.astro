@@ -1,0 +1,189 @@
+---
+/**
+ * "How I work with AI": a five-step workflow, ground rules,
+ * and a short case study showing this very site was built with Claude Code.
+ */
+import { ai } from '../data/ai';
+import type { Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ai[lang];
+---
+
+<section id="ai" class="wrap section">
+  <h2 class="section-title">{t.title}</h2>
+  <p class="lead">{t.lead}</p>
+
+  <ol class="steps">
+    {
+      t.steps.map((s, i) => (
+        <li class="step">
+          <span class="num">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="name">{s.title}</h3>
+          <div>
+            <p class="text">{s.text}</p>
+            <ul class="tools">
+              {s.tools.map((tool) => (
+                <li>{tool}</li>
+              ))}
+            </ul>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+
+  <div class="rules">
+    <p class="rules-label">{t.principlesLabel}</p>
+    <ul>
+      {t.principles.map((p) => <li>{p}</li>)}
+    </ul>
+  </div>
+
+  <article class="proof">
+    <p class="proof-label">{t.proof.label}</p>
+    <h3 class="proof-title">{t.proof.title}</h3>
+    <p class="proof-text">{t.proof.text}</p>
+  </article>
+</section>
+
+<style>
+  .lead {
+    margin-top: 28px;
+    font: 500 clamp(20px, 2vw, 26px) / 1.35 var(--sans);
+    font-stretch: 88%;
+    letter-spacing: -0.01em;
+    max-width: 46ch;
+  }
+
+  /* ---- Steps ---- */
+  .steps {
+    list-style: none;
+    margin-top: 40px;
+    border-top: 2px solid var(--ink);
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 160px 1fr 1.3fr;
+    gap: 32px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+  }
+  .num {
+    font: 500 14px var(--mono);
+    color: var(--accent);
+  }
+  .name {
+    font: 900 clamp(30px, 3.4vw, 48px) / 0.9 var(--sans);
+    font-stretch: 62%;
+    text-transform: uppercase;
+  }
+  .text {
+    font-size: 19px;
+    line-height: 1.45;
+  }
+  .tools {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .tools li {
+    font: 500 12px var(--mono);
+    padding: 4px 9px;
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+  }
+
+  /* ---- Ground rules ---- */
+  .rules {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 32px;
+    padding: 28px 0;
+    border-bottom: 2px solid var(--ink);
+    align-items: baseline;
+  }
+  .rules-label {
+    font: 500 14px var(--mono);
+    color: var(--muted);
+  }
+  .rules ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px 32px;
+    font: 800 clamp(20px, 2vw, 26px) / 1.2 var(--sans);
+    font-stretch: 80%;
+  }
+  .rules li::before {
+    content: '●';
+    color: var(--accent);
+    font-size: 0.6em;
+    vertical-align: 0.2em;
+    margin-right: 0.5em;
+  }
+
+  /* ---- Case study ---- */
+  .proof {
+    margin-top: 56px;
+    padding: clamp(28px, 4vw, 48px);
+    background: var(--ink);
+    color: var(--paper);
+  }
+  /* The box is the inverse of the page, so its green is the other theme's green. */
+  .proof {
+    --proof-green: #4fd18b;
+  }
+  .proof-label {
+    font: 500 13px var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--proof-green);
+  }
+  .proof-label::before {
+    content: '●';
+    margin-right: 8px;
+  }
+  .proof-title {
+    margin-top: 14px;
+    font: 900 clamp(40px, 6vw, 84px) / 0.85 var(--sans);
+    font-stretch: 62%;
+    text-transform: uppercase;
+  }
+  .proof-text {
+    margin-top: 20px;
+    max-width: 60ch;
+    font-size: 19px;
+    line-height: 1.45;
+    opacity: 0.9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .proof {
+      --proof-green: #12894f;
+    }
+  }
+  :global(:root[data-theme='dark']) .proof {
+    --proof-green: #12894f;
+  }
+
+  @media (max-width: 800px) {
+    .step {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      padding: 24px 0;
+    }
+    .rules {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .rules ul {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

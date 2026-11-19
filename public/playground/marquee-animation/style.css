@@ -1,0 +1,53 @@
+@font-face {
+  font-display: swap;
+  font-family: 'PAG Libre';
+  src:
+    url('./assets/PAGLibreRegular.woff2') format('woff2'),
+    url('./assets/PAGLibreRegular.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #a19f94;
+  font-family: 'PAG Libre';
+}
+
+.topbar {
+  color: #000;
+}
+
+.spacer {
+  height: 40vh;
+}
+
+.marquee {
+  background: #0f0f0f;
+  color: #eee;
+  font-size: 60px;
+  overflow: hidden;
+  padding: 60px 0;
+  position: relative;
+  text-transform: uppercase;
+}
+
+.marquee__inner {
+  display: flex;
+  flex: auto;
+  flex-direction: row;
+  width: fit-content;
+}
+
+.marquee__part {
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  padding: 0 20px;
+}

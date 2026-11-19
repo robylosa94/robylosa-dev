@@ -1,0 +1,223 @@
+@font-face {
+  font-display: swap;
+  font-family: 'Neue Montreal';
+  src:
+    url('./assets/NeueMontreal-regular.woff2') format('woff2'),
+    url('./assets/NeueMontreal-regular.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+}
+
+:root {
+  --color-menu-overlay: #a0e806;
+  --color-menu-text: #000;
+  --color-divider: #000;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background: url('images/hero.jpg') no-repeat 50% 50%;
+  background-size: cover;
+  font-family: 'Neue Montreal';
+  height: 100vh;
+  width: 100%;
+}
+
+a {
+  color: var(--color-menu-text);
+  text-decoration: none;
+}
+
+i {
+  position: relative;
+  top: 1px;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+}
+
+nav {
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 2em;
+  position: fixed;
+  top: 80px;
+  width: 100%;
+}
+
+.menu-open-btn {
+  cursor: pointer;
+}
+
+h1.header {
+  bottom: 0;
+  color: #fff;
+  font-size: 140px;
+  font-weight: 400;
+  line-height: 1;
+  margin: 0.25em;
+  position: absolute;
+}
+
+.menu-overlay {
+  background-color: var(--color-menu-overlay);
+  clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+  padding: calc(80px + 2em) 2em 2em;
+  pointer-events: none;
+  width: 100%;
+}
+
+.menu-nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.menu-close-btn {
+  cursor: pointer;
+}
+
+.menu-close-btn {
+  color: var(--color-menu-text);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.menu-cols {
+  display: flex;
+}
+
+.menu-cols > div {
+  flex: 1;
+  padding: 1em 0;
+}
+
+.video {
+  width: 50%;
+}
+
+.video-preview {
+  background: url('images/showreel-thumbnail.jpg') no-repeat 50% 50%;
+  background-size: cover;
+  border-radius: 4px;
+  height: 0px;
+  width: 100%;
+}
+
+.video-details {
+  color: var(--color-menu-text);
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5em 0;
+  width: 100%;
+}
+
+.menu-link {
+  position: relative;
+  width: max-content;
+}
+
+.menu-link a {
+  font-size: 40px;
+}
+
+.menu-link:after {
+  background-color: var(--color-menu-text);
+  content: '';
+  height: 2px;
+  left: 0;
+  position: absolute;
+  top: 100%;
+  transition: 0.3s all;
+  width: 0;
+}
+
+.menu-link:hover:after {
+  width: 100%;
+}
+
+.btn {
+  border: 1px solid var(--color-menu-text);
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 2em 0;
+  overflow: hidden;
+  padding: 1.25em 2.5em;
+  position: relative;
+  width: max-content;
+}
+
+.btn:before {
+  background-color: var(--color-menu-text);
+  content: '';
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transition: 0.3s all;
+  width: 0;
+}
+
+.btn a {
+  position: relative;
+  z-index: 2;
+}
+
+.btn:hover a {
+  color: var(--color-menu-overlay);
+}
+
+.btn:hover:before {
+  width: 100%;
+}
+
+.menu-footer {
+  color: var(--color-menu-text);
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-divider {
+  background-color: var(--color-divider);
+  height: 1px;
+  margin: 1em 0;
+  width: 0%;
+}
+
+.menu-footer-copy {
+  display: flex;
+  justify-content: space-between;
+}
+
+.socials {
+  display: flex;
+  gap: 1em;
+}
+
+@media (max-width: 900px) {
+  .menu-overlay {
+    height: 100vh;
+  }
+
+  .menu-cols {
+    display: block;
+  }
+
+  .video-preview {
+    height: 125px;
+  }
+
+  .menu-link a {
+    font-size: 30px;
+  }
+}

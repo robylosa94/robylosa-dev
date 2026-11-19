@@ -1,0 +1,91 @@
+---
+import { content, ui, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang];
+const c = content(lang);
+---
+
+<section id="skills" class="wrap section">
+  <h2 class="section-title">{t.skills}</h2>
+  <dl class="groups">
+    {
+      c.skills.map(({ group, items }) => (
+        <div class="group">
+          <dt>{group}</dt>
+          <dd>
+            <ul>
+              {items.map((s) => (
+                <li>{s}</li>
+              ))}
+            </ul>
+          </dd>
+        </div>
+      ))
+    }
+    <div class="group">
+      <dt>{t.aiWorkflow}</dt>
+      <dd class="about">{c.ai}</dd>
+    </div>
+    <div class="group soft">
+      <dt>{t.softSkills}</dt>
+      <dd class="about">{c.softSkills}</dd>
+    </div>
+    <div class="group">
+      <dt>{t.spokenLanguages}</dt>
+      <dd class="langs">{c.languages}</dd>
+    </div>
+  </dl>
+</section>
+
+<style>
+  .group {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 32px;
+    align-items: baseline;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  dt {
+    font: 500 14px var(--mono);
+    color: var(--muted);
+  }
+  ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 0;
+    font: 800 clamp(22px, 2.6vw, 34px) / 1.2 var(--sans);
+    font-stretch: 75%;
+  }
+  li:not(:last-child)::after {
+    content: '/';
+    color: var(--line);
+    margin: 0 0.35em;
+    font-weight: 400;
+  }
+  /* Soft skills: separated from the technical rows by a heavier rule. */
+  .soft {
+    border-top: 2px solid var(--ink);
+    margin-top: 24px;
+  }
+  .about {
+    font: 500 clamp(19px, 1.9vw, 24px) / 1.45 var(--sans);
+    font-stretch: 92%;
+    max-width: 52ch;
+  }
+  .langs {
+    font: 500 clamp(17px, 1.6vw, 20px) / 1.4 var(--sans);
+  }
+  @media (max-width: 800px) {
+    .group {
+      grid-template-columns: 1fr;
+      gap: 6px;
+      padding: 16px 0;
+    }
+  }
+</style>

@@ -1,0 +1,28 @@
+---
+/** The whole one-page site, in one language. Used by src/pages/index.astro and src/pages/it/index.astro. */
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import Work from './Work.astro';
+import AiWorkflow from './AiWorkflow.astro';
+import Skills from './Skills.astro';
+import Contact from './Contact.astro';
+import { content, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = content(lang);
+---
+
+<Base lang={lang} title={c.title} description={c.description}>
+  <Header lang={lang} />
+  <main>
+    <Hero lang={lang} />
+    <Work lang={lang} />
+    <Skills lang={lang} />
+    <AiWorkflow lang={lang} />
+    <Contact lang={lang} />
+  </main>
+</Base>
