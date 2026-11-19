@@ -2,9 +2,9 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "playground.robylosa.dev" }],
-      "destination": "https://www.robylosa.dev/playground/:path*",
+      "destination": "https://www.robylosa.dev/playground/$1",
       "permanent": true
     }
   ]
