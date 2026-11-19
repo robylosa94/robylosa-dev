@@ -43,6 +43,7 @@ export const ui = {
     /** A short accent word can use the wide cut; longer ones stay condensed so they fit. */
     sayWide: true,
     madeIn: 'Made in',
+    pgTitle: 'Playground — Interface experiments by Roberto Losa',
     pgLead: 'A collection of interface experiments — animations, sliders, menus and scroll effects I built to study new techniques.',
     pgCount: 'demos',
     pgOpen: 'Open demo',
@@ -69,6 +70,7 @@ export const ui = {
     sayAfter: '?',
     sayWide: false,
     madeIn: 'Made in',
+    pgTitle: 'Playground — Esperimenti di interfaccia di Roberto Losa',
     pgLead: "Una raccolta di esperimenti di interfaccia: animazioni, slider, menu ed effetti allo scroll che ho realizzato per studiare nuove tecniche.",
     pgCount: 'demo',
     pgOpen: 'Apri la demo',

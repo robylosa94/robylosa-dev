@@ -21,7 +21,7 @@ const thumbs = import.meta.glob<{ default: ImageMetadata }>('../assets/playgroun
 const thumbOf = (slug: string) => thumbs[`../assets/playground/${slug}.jpg`]?.default;
 ---
 
-<Base lang={lang} title={`Playground — ${site.name}`} description={t.pgLead}>
+<Base lang={lang} title={t.pgTitle} description={t.pgLead} image={`/og/playground-${lang}.png`}>
   <Header lang={lang} />
   <main class="wrap page">
     <p class="kicker">Playground · {demos.length} {t.pgCount}</p>

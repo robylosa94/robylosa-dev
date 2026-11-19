@@ -24,7 +24,7 @@ Home: intro, work, skills, how I work with AI, contact. Plus the playground at `
 - `src/data/ai.ts` — the "How I work with AI" section and the case study, in English and Italian.
 - `src/components/` — Header, Hero, Work, Skills, AiWorkflow, Contact (with footer), Playground (the demo index).
 - `src/styles/global.css` — colour tokens (light/dark), fonts (Archivo variable + IBM Plex Mono), shared styles.
-- `src/pages/og.png.ts` — social preview image, generated at build time.
+- `og/` — social preview images (home and playground, English + Italian) in the site's style. Edit `og/og.html`, then run `./og/build.sh` to regenerate the PNGs in `public/og/` (needs Google Chrome and `npm install`, for the fonts). Page titles and meta descriptions live in `src/data/site.ts` (home) and `src/i18n/index.ts` (`pgTitle`, `pgLead`).
 - `src/data/playground.ts` — the playground demos (slug, title, libraries used); thumbnails in `src/assets/playground/`.
 - `public/playground/<slug>/` — the demos themselves: plain HTML/CSS/JS pages served as-is, with a shared top bar (`public/playground/topbar.css`).
 - `cv/` — the CV (Italian + English, light + dark) in the site's style. Edit `cv/cv.html`, then run `./cv/build.sh` to regenerate the four PDFs in `public/files/` (needs Google Chrome).

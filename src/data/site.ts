@@ -9,9 +9,10 @@ export const site = {
   since: 2013,
   location: { city: "Lecco", country: "Italy", timeZone: "Europe/Rome" },
   url: "https://www.robylosa.dev",
-  title: "Roberto Losa — Frontend engineer",
+  /** <title> and meta description of the home page (keep the description under ~160 characters). */
+  title: "Roberto Losa — Frontend Engineer in Lecco, Italy",
   description:
-    "I'm a frontend engineer based in Lecco, building for the web since 2013. Today I work at iliad on the platforms the dealer network uses every day.",
+    "Roberto Losa, frontend engineer in Lecco building for the web since 2013. Websites, web apps and internal platforms in Vue, React and TypeScript, now at iliad.",
 
   // TODO: confirm the public email address before going live.
   email: "roby94.losa@tiscali.it",
@@ -78,9 +79,9 @@ export const site = {
    * (name, links, skill names…) is shared between the two languages.
    */
   it: {
-    title: "Roberto Losa — Frontend engineer",
+    title: "Roberto Losa — Frontend Engineer a Lecco",
     description:
-      "Sono un frontend engineer di Lecco e sviluppo per il web dal 2013. Oggi lavoro in iliad alle piattaforme che la rete di vendita usa ogni giorno.",
+      "Roberto Losa, frontend engineer a Lecco: sviluppo per il web dal 2013. Siti, web app e piattaforme interne con Vue, React e TypeScript, oggi in iliad.",
     cv: "/files/Roberto-Losa-CV-italiano-dark.pdf",
     intro:
       "Faccio il frontend developer dal 2013. Realizzo siti, web app e piattaforme interne per aziende di ogni settore, con un obiettivo che non cambia: rendere semplice ciò che è complesso. Curo ogni dettaglio, anche quelli che non si vedono: codice pulito, basi solide e interfacce che funzionano davvero.",
