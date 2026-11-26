@@ -42,7 +42,7 @@ const personLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {!noindex && <link rel="canonical" href={canonical} />}
     {!noindex && alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
     {!noindex && <link rel="alternate" hreflang="x-default" href={alternates[0].href} />}
     {noindex && <meta name="robots" content="noindex" />}

@@ -40,3 +40,9 @@ English lives at `/`, Italian at `/it/` (switch in the header).
 ## Deploy
 
 Hosted on Vercel, deployed on every push to `main`. `vercel.json` redirects the old `playground.robylosa.dev` (and its demo URLs) to `/playground/`.
+
+One URL per page, so Google doesn't see duplicates:
+
+- `vercel.json` redirects `robylosa.dev` to `www.robylosa.dev` and adds the trailing slash (`/it` → `/it/`); Astro uses `trailingSlash: 'always'` to match.
+- Every page has a `<link rel="canonical">` (from `src/layouts/Base.astro`, or written by hand in each `public/playground/<slug>/index.html`: add one to any new demo).
+- The light CV PDFs send a `Link: rel="canonical"` header pointing to the dark ones the site links to.

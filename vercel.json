@@ -1,11 +1,28 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": true,
   "redirects": [
     {
       "source": "/(.*)",
       "has": [{ "type": "host", "value": "playground.robylosa.dev" }],
       "destination": "https://www.robylosa.dev/playground/$1",
       "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "robylosa.dev" }],
+      "destination": "https://www.robylosa.dev/$1",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/files/Roberto-Losa-CV-english.pdf",
+      "headers": [{ "key": "Link", "value": "<https://www.robylosa.dev/files/Roberto-Losa-CV-english-dark.pdf>; rel=\"canonical\"" }]
+    },
+    {
+      "source": "/files/Roberto-Losa-CV-italiano.pdf",
+      "headers": [{ "key": "Link", "value": "<https://www.robylosa.dev/files/Roberto-Losa-CV-italiano-dark.pdf>; rel=\"canonical\"" }]
     }
   ]
 }
