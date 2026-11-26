@@ -8,13 +8,19 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  /** Social preview (1200×630 PNG in public/og/, made by og/build.sh). Defaults to the home one for `lang`. */
+  image?: string;
+  /** Alt text for the social preview; defaults to the title. */
+  imageAlt?: string;
 }
 
-const { lang = 'en', title = site.title, description = site.description, noindex = false } = Astro.props;
-const ogLocale = lang === 'it' ? 'it_IT' : 'en_US';
+const { lang = 'en', noindex = false } = Astro.props;
+const { title = site.title, description = site.description, image = `/og/home-${lang}.png` } = Astro.props;
+const imageAlt = Astro.props.imageAlt ?? title;
+const ogLocales: Record<Lang, string> = { en: 'en_US', it: 'it_IT' };
 const alternates = (Object.keys(languages) as Lang[]).map((l) => ({ lang: l, href: new URL(pathIn(Astro.url.pathname, l), Astro.site).href }));
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const ogImage = new URL('/og.png', Astro.site).href;
+const ogImage = new URL(image, Astro.site).href;
 
 const personLd = {
   '@context': 'https://schema.org',
@@ -36,7 +42,7 @@ const personLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {!noindex && <link rel="canonical" href={canonical} />}
     {!noindex && alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
     {!noindex && <link rel="alternate" hreflang="x-default" href={alternates[0].href} />}
     {noindex && <meta name="robots" content="noindex" />}
@@ -48,12 +54,21 @@ const personLd = {
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
-    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale" content={ogLocales[lang]} />
+    {!noindex && alternates.filter((a) => a.lang !== lang).map((a) => <meta property="og:locale:alternate" content={ogLocales[a.lang]} />)}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={imageAlt} />
 
     <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
 
